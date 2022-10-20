@@ -33,10 +33,12 @@ pool.query(`
 SELECT students.id, students.name as name, cohorts.name as cohort_name
 FROM students
 join cohorts on cohorts.id = cohort_id
-where students.id = ${argies[0]}
-LIMIT ${argies[1]};
- `)
+where students.id = $1
+LIMIT $2;
+ `,argies)
   .then(res => {
-    console.log(res.rows);
+    res.rows.forEach(user => {
+      console.log(`${user.name} has an id of ${user.id} and was in the ${user.cohort_name} cohort`);
+    });
   })
   .catch(err => console.error('query error', err.stack));
